@@ -1,10 +1,6 @@
 <?php
 require_once('includes/config.php');
-session_start();
-if (!isset($_SESSION['userID'])) {
-    header("Location: loginpage.php");
-    exit;
-}
+
 function getControlStatesFromDatabase($conn)
 {
     $controlStates = array();
@@ -394,217 +390,26 @@ $currentRoute = "controls";
                 </div>
             </div>
         </section>
-
-        <!-- <section class="section">
-            <div class="container mt-5">
-                <div class="d-flex flex-wrap justify-content-center">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <button class="btn btn-sm btn-light" data-bs-toggle="collapse" data-bs-target="#nutrientADetails">
-                                    <i class="fas fa-plus fa-2x"></i>
-                                </button>
-                                <span class="component-name" style="">Nutrient A</span>
-                                <div class="form-check form-switch text-primary">
-                                    <input class="form-check-input" type="checkbox" id="nutrientA" onclick='toggleComponent("nutrientA", this.checked)'>
-                                </div>
-                            </div>
-                            <div class="collapse" id="nutrientADetails">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <label class="col-md-6 col-form-label text-start">Amount to Dispense (ml):</label>
-                                        <div class="col-md-6">
-                                            <input type="text" id="nutrient-A" class="form-control">
-                                            <input type="hidden" id="nutrientAMinutes">
-                                        </div>
-                                        <div class="col-md-6 mt-2">
-                                            <button type="button" class="btn btn-success" onclick='turnOnComponent("nutrientA", "nutrient-A", "nutrientAMinutes")'>Pump Volume</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <button class="btn btn-sm btn-light" data-bs-toggle="collapse" data-bs-target="#nutrientBDetails">
-                                    <i class="fas fa-plus fa-2x"></i>
-                                </button>
-                                <span class="component-name">Nutrient B</span>
-                                <div class="form-check form-switch text-primary">
-                                    <input class="form-check-input" type="checkbox" id="nutrientB" onclick='toggleComponent("nutrientB", this.checked)'>
-                                </div>
-                            </div>
-                            <div class="collapse" id="nutrientBDetails">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <label class="col-md-6 col-form-label text-start">Amount to Dispense (ml):</label>
-                                        <div class="col-md-6">
-                                            <input type="text" id="nutrient-B" class="form-control">
-                                            <input type="hidden" id="nutrientBMinutes">
-                                        </div>
-                                        <div class="col-md-6 mt-2">
-                                            <button type="button" class="btn btn-success" onclick='turnOnComponent("nutrientB", "nutrient-B", "nutrientBMinutes")'>Pump Volume</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <button class="btn btn-sm btn-light" data-bs-toggle="collapse" data-bs-target="#pumpPhDownDetails">
-                                    <i class="fas fa-plus fa-2x"></i>
-                                </button>
-                                <span class="component-name">pH Down</span>
-                                <div class="form-check form-switch text-primary">
-                                    <input class="form-check-input" type="checkbox" id="pumpPhDown" onclick='toggleComponent("pumpPhDown", this.checked)'>
-                                </div>
-                            </div>
-                            <div class="collapse" id="pumpPhDownDetails">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <label class="col-md-6 col-form-label text-start">Amount to Dispense (ml):</label>
-                                        <div class="col-md-6">
-                                            <input type="text" id="phDown" class="form-control">
-                                            <input type="hidden" id="phDownMinutes">
-                                        </div>
-                                        <div class="col-md-6 mt-2">
-                                            <button type="button" class="btn btn-success" onclick='turnOnComponent("pumpPhDown", "phDown", "phDownMinutes")'>Pump Volume</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <button class="btn btn-sm btn-light" data-bs-toggle="collapse" data-bs-target="#pumpPhUpDetails">
-                                    <i class="fas fa-plus fa-2x"></i>
-                                </button>
-                                <span class="component-name">pH Up</span>
-                                <div class="form-check form-switch text-primary">
-                                    <input class="form-check-input" type="checkbox" id="pumpPhUp" onclick='toggleComponent("pumpPhUp", this.checked)'>
-                                </div>
-                            </div>
-                            <div class="collapse" id="pumpPhUpDetails">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <label class="col-md-6 col-form-label text-start">Amount to Dispense (ml):</label>
-                                        <div class="col-md-6">
-                                            <input type="text" id="phUp" class="form-control">
-                                            <input type="hidden" id="phUpMinutes">
-                                        </div>
-                                        <div class="col-md-6 mt-2">
-                                            <button type="button" class="btn btn-success" onclick='turnOnComponent("pumpPhUp", "phUp", "phUpMinutes")'>Pump Volume</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <button class="btn btn-sm btn-light" data-bs-toggle="collapse" data-bs-target="#purifiedWaterDetails">
-                                    <i class="fas fa-plus fa-2x"></i>
-                                </button>
-                                <span class="component-name">Distilled Water</span>
-                                <div class="form-check form-switch text-primary">
-                                    <input class="form-check-input" type="checkbox" id="purifiedWater" onclick='toggleComponent("purified_water", this.checked)'>
-                                </div>
-                            </div>
-                            <div class="collapse" id="purifiedWaterDetails">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <label class="col-md-6 col-form-label text-start">Amount to Dispense (ml):</label>
-                                        <div class="col-md-6">
-                                            <input type="text" id="purified" class="form-control">
-                                            <input type="hidden" id="purifiedMinutes">
-                                        </div>
-                                        <div class="col-md-6 mt-2">
-                                            <button type="button" class="btn btn-success" onclick='turnOnComponent("purified_water", "purified", "purifiedMinutes")'>
-                                                Pump Volume
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <button class="btn btn-sm btn-light" data-bs-toggle="collapse" data-bs-target="#growLightDetails">
-                                    <i class="fas fa-plus fa-2x"></i>
-                                </button>
-                                <span class="component-name">Grow Light</span>
-                                <div class="form-check form-switch text-primary">
-                                    <input class="form-check-input" type="checkbox" id="growLight" onclick='toggleComponent("growLight", this.checked)'>
-                                </div>
-                            </div>
-                            <div class="collapse" id="growLightDetails">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <label class="col-md-6 col-form-label text-start">Duration (minutes):</label>
-                                        <div class="col-md-6">
-                                            <input type="text" id="growLightDuration" class="form-control">
-                                        </div>
-                                        <div class="col-md-6 mt-2">
-                                            <button type="button" class="btn btn-success" onclick='turnOnComponent("growLight", "growLightDuration", null)'>Activate Light</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body d-flex justify-content-between align-items-center">
-                                <button class="btn btn-sm btn-light" data-bs-toggle="collapse" data-bs-target="#waterPumpDetails">
-                                    <i class="fas fa-plus fa-2x"></i>
-                                </button>
-                                <span class="component-name">Water Pump</span>
-                                <div class="form-check form-switch text-primary">
-                                    <input class="form-check-input" type="checkbox" id="waterPump" onclick='toggleComponent("waterPump", this.checked)'>
-                                </div>
-                            </div>
-                            <div class="collapse" id="waterPumpDetails">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <label class="col-md-6 col-form-label text-start">Duration (minutes):</label>
-                                        <div class="col-md-6">
-                                            <input type="text" id="waterPumpDuration" class="form-control">
-                                        </div>
-                                        <div class="col-md-6 mt-2">
-                                            <button type="button" class="btn btn-success" onclick='turnOnComponent("waterPump", "waterPumpDuration", null)'>Activate Pump</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section> -->
     </main>
 
+    <form id="controlsForm" class="d-none">
+        <label for="componentName">Component Name:</label>
+        <input type="text" id="componentName" name="componentName" required>
 
-    <!-- ======= Footer ======= -->
-    <?php //require_once('includes/footer.php'); 
+        <label for="dispenseAmount">Dispense Amount:</label>
+        <input type="number" id="dispenseAmount" name="dispense_amount" required>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <?php require_once('includes/mobile-nav.php'); ?>
+
+    <?php
+    // require_once('includes/footer.php'); 
     ?>
 
-    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <!-- <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/automatic_logout.js"></script>
     <script>
@@ -628,104 +433,6 @@ $currentRoute = "controls";
 
         ChangeIcon();
 
-        // function turnOnComponent(componentName, hoursID, minutesID) {
-        //     var dispenseAmount = 0;
-        //     var hours = 0,
-        //         minutes = 0;
-
-        //     hours = parseFloat(document.getElementById(hoursID).value);
-        //     minutes = parseFloat(document.getElementById(minutesID).value);
-        //     if (componentName === "growLight" || componentName === "waterPump" && (hoursID && minutesID)) {
-        //         // If the component has separate hours and minutes inputs
-
-        //         if (isNaN(minutes)) {
-        //             minutes = 0;
-        //         } else if (isNaN(hours)) {
-        //             hours = 0;
-        //         }
-
-        //         if (!isNaN(hours) && !isNaN(minutes)) {
-        //             dispenseAmount = (hours * 3600) + (minutes * 60);
-        //         } else {
-        //             console.error("Invalid input value for " + componentName);
-        //         }
-        //     } else if (hoursID && minutesID) {
-        //         // If the component has separate hours and minutes inputs
-        //         // hours = parseFloat(document.getElementById(hoursID).value);
-        //         // minutes = parseFloat(document.getElementById(minutesID).value);
-
-        //         if (isNaN(minutes)) {
-        //             minutes = 0;
-        //         } else if (isNaN(hours)) {
-        //             hours = 0;
-        //         }
-
-        //         if (!isNaN(hours) && !isNaN(minutes)) {
-        //             dispenseAmount = hours;
-        //         } else {
-        //             console.error("Invalid input value for " + componentName);
-        //         }
-        //     }
-
-        //     if (hours > 0 || (hours <= 0 && minutes > 0)) {
-        //         showAlert(componentName, true);
-        //     } else {
-        //         showAlert(componentName, false);
-        //     }
-
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "update_controls.php",
-        //         data: {
-        //             componentName: componentName,
-        //             // state: state,
-        //             dispense_amount: dispenseAmount
-        //         },
-        //         success: function(response) {
-        //             // console.log("Component turned on successfully: " + response);
-        //             // console.log("Dispense amount: " + dispenseAmount);
-        //             var inputField = document.querySelector('#' + componentName + 'Details input[type="text"]');
-        //             var minuteField = document.getElementById(componentName + 'Minutes');
-        //             if (inputField) {
-        //                 inputField.value = '';
-        //             }
-
-        //             if (minuteField) {
-        //                 minuteField.value = '';
-        //             }
-        //             // console.log(minuteField);
-        //             // console.log(inputField);
-
-        //             var collapseElement = document.querySelector('#' + componentName + 'Details');
-        //             if (collapseElement) {
-        //                 var bootstrapCollapse = new bootstrap.Collapse(collapseElement);
-        //                 bootstrapCollapse.hide();
-        //             }
-
-        //             var toggleButton = document.querySelector('[data-bs-target="#' + componentName + 'Details"]');
-        //             var iconElement = toggleButton.querySelector('i');
-
-        //             if (iconElement) {
-        //                 iconElement.classList.remove('fa-minus');
-        //                 iconElement.classList.add('fa-plus');
-        //                 // console.log(iconElement);
-        //             }
-        //             // toggleComponent(componentName, this.checked);
-        //             // window.location.reload();
-        //             // // Simulate click event on the switch button
-        //             // var switchButton = document.getElementById(componentName);
-        //             // if (switchButton) {
-        //             //     switchButton.checked = true;
-        //             //     switchButton.dispatchEvent(new Event('change'));
-        //             //     toggleComponent(componentName, switchButton);
-        //             // }
-        //         },
-        //         error: function(xhr, status, error) {
-        //             console.error("Failed to turn on component: " + error);
-        //         }
-        //     });
-        // }
-        
         // Function to restrict non-numerical input
         function restrictNonNumericalInput(inputField) {
             // Allow only numerical input
@@ -740,6 +447,7 @@ $currentRoute = "controls";
                 }
             });
         }
+
         // Apply the restriction to your input fields
         document.addEventListener('DOMContentLoaded', function() {
             var hoursInput = document.getElementById(hoursID);
@@ -754,88 +462,201 @@ $currentRoute = "controls";
             }
         });
 
+        // function turnOnComponent(componentName, hoursID, minutesID) {
+        //     var dispenseAmount = 0;
+        //     var hours = parseFloat(document.getElementById(hoursID).value) || 0;
+        //     var minutes = parseFloat(document.getElementById(minutesID).value) || 0;
+
+        //     // Check for negative values
+        //     if (hours < 0 || minutes < 0) {
+        //         Swal.fire({
+        //             icon: 'error',
+        //             title: 'Invalid input',
+        //             text: 'Input value must be non-negative.'
+        //         });
+        //         // showAlert(componentName, false);
+        //         return;
+        //     }
+
+        //     // Specific checks for growLight and waterPump
+        //     if (componentName === "growLight" || componentName === "waterPump") {
+        //         // Check if both values are 0
+        //         if (hours <= 0 && minutes <= 0) {
+        //             Swal.fire({
+        //                 icon: 'error',
+        //                 title: 'Invalid input',
+        //                 text: 'At least one value (hours or minutes) must be greater than zero.'
+        //             });
+        //             // Clear input fields
+        //             document.getElementById(hoursID).value = '';
+        //             document.getElementById(minutesID).value = '';
+        //             return;
+        //         }
+        //     } else {
+        //         // For other components, ensure minutes are > 0
+        //         if (hours <= 0) {
+        //             Swal.fire({
+        //                 icon: 'error',
+        //                 title: 'Invalid input',
+        //                 text: 'Value must be greater than zero for this component.'
+        //             });
+        //             return;
+        //         }
+        //     }
+
+        //     // Calculate dispense amount based on component type
+        //     dispenseAmount = (hours * 3600) + (minutes * 60);
+
+        //     showAlert(componentName, true);
+
+        //     // AJAX request to update controls
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "update_controls.php",
+        //         data: {
+        //             componentName: componentName,
+        //             dispense_amount: dispenseAmount
+        //         },
+        //         success: function(response) {
+        //             var inputField = document.querySelector('#' + componentName + 'Details input[type="text"]');
+        //             var minuteField = document.getElementById(componentName + 'Minutes');
+
+        //             if (inputField) {
+        //                 inputField.value = '';
+        //             }
+
+        //             if (minuteField) {
+        //                 minuteField.value = '';
+        //             }
+
+        //             var collapseElement = document.querySelector('#' + componentName + 'Details');
+        //             if (collapseElement) {
+        //                 var bootstrapCollapse = new bootstrap.Collapse(collapseElement);
+        //                 bootstrapCollapse.hide();
+        //             }
+
+        //             var toggleButton = document.querySelector('[data-bs-target="#' + componentName + 'Details"]');
+        //             var iconElement = toggleButton.querySelector('i');
+
+        //             if (iconElement) {
+        //                 iconElement.classList.remove('fa-minus');
+        //                 iconElement.classList.add('fa-plus');
+        //             }
+        //         },
+        //         error: function(xhr, status, error) {
+        //             console.error("Failed to turn on component: " + error);
+        //             Swal.fire({
+        //                 icon: 'error',
+        //                 title: 'Error',
+        //                 text: 'Failed to turn on component. Please try again.'
+        //             });
+        //         }
+        //     });
+        // }
+
         function turnOnComponent(componentName, hoursID, minutesID) {
             var dispenseAmount = 0;
             var hours = parseFloat(document.getElementById(hoursID).value) || 0;
             var minutes = parseFloat(document.getElementById(minutesID).value) || 0;
 
-            // Check if both values are non-negative
+            // Check for negative values
             if (hours < 0 || minutes < 0) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Invalid input',
-                    text: 'Both hours and minutes must be non-negative.'
+                    text: 'Input value must be non-negative.'
                 });
-                showAlert(componentName, false);
                 return;
             }
 
-            // Check if at least one value is greater than 0
-            if (hours <= 0 && minutes <= 0) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Invalid input',
-                    text: 'Value must be greater than zero.'
-                });
-                // showAlert(componentName, false);
-                // Clear input fields
-                document.getElementById(hoursID).value = '';
-                document.getElementById(minutesID).value = '';
-                return;
+            // Specific checks for growLight and waterPump
+            if (componentName === "growLight" || componentName === "waterPump") {
+                if (hours <= 0 && minutes <= 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid input',
+                        text: 'At least one value (hours or minutes) must be greater than zero.'
+                    });
+                    document.getElementById(hoursID).value = '';
+                    document.getElementById(minutesID).value = '';
+                    return;
+                }
+            } else {
+                // For other components, ensure minutes are > 0
+                if (hours <= 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid input',
+                        text: 'Value must be greater than zero for this component.'
+                    });
+                    return;
+                }
             }
 
             // Calculate dispense amount based on component type
-            if (componentName === "growLight" || componentName === "waterPump") {
-                dispenseAmount = (hours * 3600) + (minutes * 60);
-            } else {
-                dispenseAmount = hours; // Adjust if needed for other components
-            }
+            dispenseAmount = (hours * 3600) + (minutes * 60);
 
-            showAlert(componentName, true);
+            // Send form data using fetch()
+            var formData = new FormData();
+            formData.append('componentName', componentName);
+            formData.append('dispense_amount', dispenseAmount);
 
-            // AJAX request to update controls
-            $.ajax({
-                type: "POST",
-                url: "update_controls.php",
-                data: {
-                    componentName: componentName,
-                    dispense_amount: dispenseAmount
-                },
-                success: function(response) {
-                    var inputField = document.querySelector('#' + componentName + 'Details input[type="text"]');
-                    var minuteField = document.getElementById(componentName + 'Minutes');
+            fetch('update_controls.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Swal.fire({
+                        //     icon: 'success',
+                        //     title: 'Component turned on',
+                        //     text: 'Data saved successfully!'
+                        // });
 
-                    if (inputField) {
-                        inputField.value = '';
+                        showAlert(componentName, true);
+
+                        // Clear input fields after successful response
+                        var inputField = document.querySelector('#' + componentName + 'Details input[type="text"]');
+                        var minuteField = document.getElementById(componentName + 'Minutes');
+
+                        if (inputField) {
+                            inputField.value = '';
+                        }
+
+                        if (minuteField) {
+                            minuteField.value = '';
+                        }
+
+                        var collapseElement = document.querySelector('#' + componentName + 'Details');
+                        if (collapseElement) {
+                            var bootstrapCollapse = new bootstrap.Collapse(collapseElement);
+                            bootstrapCollapse.hide();
+                        }
+
+                        var toggleButton = document.querySelector('[data-bs-target="#' + componentName + 'Details"]');
+                        var iconElement = toggleButton.querySelector('i');
+
+                        if (iconElement) {
+                            iconElement.classList.remove('fa-minus');
+                            iconElement.classList.add('fa-plus');
+                        }
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message || 'Failed to turn on component. Please try again.'
+                        });
                     }
-
-                    if (minuteField) {
-                        minuteField.value = '';
-                    }
-
-                    var collapseElement = document.querySelector('#' + componentName + 'Details');
-                    if (collapseElement) {
-                        var bootstrapCollapse = new bootstrap.Collapse(collapseElement);
-                        bootstrapCollapse.hide();
-                    }
-
-                    var toggleButton = document.querySelector('[data-bs-target="#' + componentName + 'Details"]');
-                    var iconElement = toggleButton.querySelector('i');
-
-                    if (iconElement) {
-                        iconElement.classList.remove('fa-minus');
-                        iconElement.classList.add('fa-plus');
-                    }
-                },
-                error: function(xhr, status, error) {
+                })
+                .catch(error => {
                     console.error("Failed to turn on component: " + error);
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
                         text: 'Failed to turn on component. Please try again.'
                     });
-                }
-            });
+                });
         }
 
 

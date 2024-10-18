@@ -1,11 +1,26 @@
 <?php
 require_once('includes/config.php');
 
-// session_start();
+
+session_start();
+
+
+if (empty($_SESSION['csrf_token'])) {
+  $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
+
+// // Check if the user is logged in
+// if (!isset($_SESSION['userID'])) {
+//   header("Location: login.php"); // Redirect to login page
+//   exit();
+// }
+
 $userID = $_SESSION['userID'];
 
+
 try {
-  $sql = "SELECT CONCAT(SUBSTRING(firstname, 1, 1), '. ', lastname) full_name, CONCAT(firstname, ' ', lastname) AS fullName, userPosition FROM user_login WHERE userID=?";
+  $sql = "SELECT CONCAT(SUBSTRING(firstname, 1, 1), '. ', lastname) full_name, CONCAT(firstname, ' ', lastname) AS fullName, profilepic, userPosition FROM user_login WHERE userID=?";
   $stmt = $conn->prepare($sql);
   $data = array($userID);
   $stmt->execute($data);
@@ -14,11 +29,13 @@ try {
     $full_name = $result['full_name'];
     $fullName = $result['fullName'];
     $userPosition = $result['userPosition'];
+    $imageName = $result['profilepic'];
   }
 } catch (PDOException $e) {
   echo "Error: " . $e->getMessage();
   // exit();
 }
+
 ?>
 <style>
   .icon-wrapper {
@@ -68,7 +85,7 @@ try {
 <header id="header" class="header fixed-top d-flex align-items-center">
 
   <div class="d-flex align-items-center justify-content-between">
-    <a href="gauge-index.php" class="logo d-flex align-items-center">
+    <a href="index.php" class="logo d-flex align-items-center">
       <img src="assets/img/logoSIT.png" alt="">
       <span class="d-none d-lg-block">SIT - Admin</span>
     </a>
@@ -80,7 +97,8 @@ try {
       <li class="nav-item dropdown pe-3">
         <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
           <!-- <img src="assets/img/profile-img.png" alt="Profile" class="rounded-circle"> -->
-          <img src="get_user_profile_image.php" alt="Profile" id="navbarImage" class="rounded-circle">
+          <img src="public/profile_pictures/<?= htmlspecialchars($imageName); ?>" alt="Profile" id="navbarImage" class="rounded-circle" height="50" width="50">
+          <!-- <img src="get_user_profile_image.php" alt="Profile" id="navbarImage" class="rounded-circle"> -->
           <span class="d-none d-md-block dropdown-toggle ps-2" id="navbarFullName"><?= $full_name ?></span>
         </a><!-- End Profile Iamge Icon -->
 
@@ -103,32 +121,27 @@ try {
             <hr class="dropdown-divider">
           </li>
 
-          <!-- <li>
-              <a class="dropdown-item d-flex align-items-center" href="users-profile.php">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
-            </li> -->
           <li>
             <hr class="dropdown-divider">
-          </li>
-
-          <li>
-            <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-              <i class="bi bi-question-circle"></i>
-              <span>Need Help?</span>
-            </a>
           </li>
           <li>
             <hr class="dropdown-divider">
           </li>
 
           <li>
-            <a class="dropdown-item d-flex align-items-center" href="logout.php">
+            <form method="POST" action="logout.php">
+            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($_SESSION['csrf_token']); ?>">
+              <button class="dropdown-item d-flex align-items-center" type="submit" name="logout">
+                <i class="bi bi-box-arrow-right"></i>
+                Logout
+              </button>
+            </form>
+
+            <!-- <a class="dropdown-item d-flex align-items-center" href="logout.php">
               <i class="bi bi-box-arrow-right"></i>
               <span>Sign Out</span>
 
-            </a>
+            </a> -->
           </li>
 
         </ul><!-- End Profile Dropdown Items -->
@@ -136,46 +149,14 @@ try {
 
     </ul>
   </nav><!-- End Icons Navigation -->
-
-  <div class="d-block d-sm-none">
-    <div class="position-fixed bottom-0 start-0 end-0 bg-light border-top" style="z-index: 1050">
-      <div class="container py-2">
-        <div class="d-flex justify-content-around">
-
-          <div class="text-center">
-            <a href="gauge-index.php" class="<?php echo ($currentRoute === 'dashboard') ? 'nav-link active text-dark border-bottom border-3 border-primary' : 'nav-link text-muted hover-link'; ?>">
-              <div class="d-flex flex-column align-items-center">
-                <div class="icon-wrapper <?php echo ($currentRoute === 'dashboard') ? 'active' : ''; ?>">
-                  <i class="fas fa-tachometer-alt" style="font-size: 1.67em;"></i>
-                </div>
-                <span class="ps-2 pe-2 pb-2 fw-bold text-wrapper <?php echo ($currentRoute === 'dashboard') ? 'active' : ''; ?>">Dashboard</span>
-              </div>
-            </a>
-          </div>
-
-          <div class="text-center">
-            <a href="controls.php" class="<?php echo ($currentRoute === 'controls') ? 'nav-link active text-dark border-bottom border-3 border-primary' : 'nav-link text-muted hover-link'; ?>">
-              <div class="d-flex flex-column align-items-center">
-                <div class="icon-wrapper <?php echo ($currentRoute === 'controls') ? 'active' : ''; ?>">
-                  <i class="fas fa-sliders-h" style="font-size: 1.67em;"></i>
-                </div>
-                <span class="ps-2 pe-2 pb-2 fw-bold text-wrapper <?php echo ($currentRoute === 'controls') ? 'active' : ''; ?>">Controls</span>
-              </div>
-            </a>
-          </div>
-
-          <div class="text-center">
-            <a href="historical-data.php" class="<?php echo ($currentRoute === 'historical') ? 'nav-link active text-dark border-bottom border-3 border-primary' : 'nav-link text-muted hover-link'; ?>">
-              <div class="d-flex flex-column align-items-center">
-                <div class="icon-wrapper <?php echo ($currentRoute === 'historical') ? 'active' : ''; ?>">
-                  <i class="fas fa-history" style="font-size: 1.67em;"></i>
-                </div>
-                <span class="ps-2 pe-2 pb-2 fw-bold text-wrapper <?php echo ($currentRoute === 'historical') ? 'active' : ''; ?>">Historical Data</span>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </header><!-- End Header -->
+
+<script>
+  document.addEventListener('contextmenu', event => event.preventDefault());
+
+  document.onkeydown = function(e) {
+    if (e.key === "F12") {
+      return false; // Disable F12
+    }
+  };
+</script>

@@ -2,10 +2,7 @@
 require_once('includes/config.php');
 
 session_start();
-if (!isset($_SESSION['userID'])) {
-    header("Location: loginpage.php");
-    exit;
-}
+
 $user_id =  $_SESSION['userID'];
 
 $currentRoute = "historical";
@@ -167,6 +164,9 @@ $currentRoute = "historical";
         </section>
 
     </main>
+
+    <?php require_once('includes/mobile-nav.php'); ?>
+    
     <script src="jquery/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
@@ -296,11 +296,9 @@ $currentRoute = "historical";
     </script>
 
     <script src="https://cdn3.devexpress.com/jslib/17.1.6/js/dx.all.js"></script>
-    <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
-    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
     <script src="js/automatic_logout.js"></script>
 
-    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <!-- <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a> -->
     <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
     <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="assets/vendor/chart.js/chart.umd.js"></script>
